@@ -53,9 +53,37 @@ class Question(object):
         self.question = question
         self.correct_answer = answer
 
+    def ask_and_evaluate(self):
+        """Ask and evaluate answer.
+
+            Print the question to the console and prompt the user for the answer.
+            Return True if the answer is correct.
+            Otherwise return False.
+        """
+        response = raw_input(self.question + " > ")
+        return response.lower() == self.correct_answer.lower()
+
 
 class Exam(object):
     """Representation questions for an exam"""
     def __init__(self, name):
         self.name = name
         self.questions = []
+
+    def add_question(self, question, correct_answer):
+        """Make question and add it in list of questions for the exam"""
+        self.questions.append(Question(question, correct_answer))
+
+    def administer(self):
+        """Administer all of the exam's questions and return the user score"""
+        score = 0
+
+        if len(self.questions) != 0:
+
+            for question in self.questions:
+                if question.ask_and_evaluate():
+                    score += 1
+            score = float(score) / len(self.questions)
+
+        print score
+        return score
