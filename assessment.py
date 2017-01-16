@@ -18,7 +18,7 @@ Part 1: Discussion
     atrributes and functions.
 
 3. What is an instance attribute?
-    Atribute of a concreate object already initialized
+    Atribute of a concreate object already initialized and/or added at runtime
 
 4. What is a method?
     Operations which performs action with attributes of class or abstract
@@ -79,11 +79,29 @@ class Exam(object):
         score = 0
 
         if len(self.questions) != 0:
-
             for question in self.questions:
                 if question.ask_and_evaluate():
                     score += 1
             score = float(score) / len(self.questions)
 
-        print score
         return score
+
+
+def take_test(exam, student):
+    """Administer test on a student and assign and print score"""
+    student.score = exam.administer()
+    print '{}, your score is {:0.2f}'.format(student.first_name, student.score)
+
+
+def example():
+    """Demostration of a student taking an exam"""
+    exam = Exam('Midterm')
+    exam.add_question("2 + 2", "4")
+    exam.add_question("10 / 2", "5")
+    exam.add_question("15 * 6", "90")
+
+    student = Student('Oxana', 'Matveyuk', 'San Francisco, California')
+
+    take_test(exam, student)
+
+example()
