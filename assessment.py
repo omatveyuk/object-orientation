@@ -65,7 +65,10 @@ class Question(object):
 
 
 class Exam(object):
-    """Representation questions for an exam"""
+    """Representation questions and answers for an exam. 
+
+        Result of exam represents as percentage of correct answers.
+    """
     def __init__(self, name):
         self.name = name
         self.questions = []
@@ -87,6 +90,18 @@ class Exam(object):
         return score
 
 
+class Quiz(Exam):
+    """Representation question and answers. Quiz can be pass or no"""
+
+    def administer(self):
+        """Return result of quiz as pass or no pass"""
+        score = super(Quiz, self).administer()
+        if score > 0.5:
+            return True
+        else:
+            return False
+
+
 def take_test(exam, student):
     """Administer test on a student and assign and print score"""
     student.score = exam.administer()
@@ -94,14 +109,27 @@ def take_test(exam, student):
 
 
 def example():
-    """Demostration of a student taking an exam"""
+    """Demostration of a student taking an exam or quiz"""
+    student = Student('Oxana', 'Matveyuk', 'San Francisco, California')
+
+    print "Testing Exam"
     exam = Exam('Midterm')
     exam.add_question("2 + 2", "4")
     exam.add_question("10 / 2", "5")
     exam.add_question("15 * 6", "90")
-
-    student = Student('Oxana', 'Matveyuk', 'San Francisco, California')
-
     take_test(exam, student)
+
+    print "Testing Quiz"
+    quiz = Quiz('Midterm')
+    quiz.add_question("2 + 2", "4")
+    quiz.add_question("10 / 2", "5")
+    quiz.add_question("15 * 6", "90")
+    take_quiz(quiz, student)
+
+
+def take_quiz(quiz, student):
+    """Administer quiz on a student and assign and print result"""
+    student.score = quiz.administer()
+    print "Pass" if student.score else "No pass"
 
 example()
